@@ -22,7 +22,7 @@ actual, accesible y 100 % libre (FOSS), eliminando dependencias obsoletas.
 
 - [x] **Fase 0 — Fundación**: Vite + Bootstrap 5.3 + capa de tokens CSS + modo oscuro.
 - [x] **Fase 1 — Chrome común**: `base.html`, `nav.html`, `login.html` (piloto). *(`flashes.html` se migra en Fase 2.)*
-- [ ] **Fase 2 — Pantallas simples**: dashboard, reset_password, webhooks, users, settings, `flashes.html`.
+- [x] **Fase 2 — Pantallas simples**: dashboard (ECharts), reset_password, webhooks, users, settings. *(capa `api.js` fetch compartida; `flashes.html` se limpia en Fase 5.)*
 - [ ] **Fase 3 — Pantallas con tablas**: groups, landing_pages, sending_profiles, templates, campaigns.
 - [ ] **Fase 4 — Resultados de campaña**: `campaign_results` (mapa, gráficas y tablas).
 - [ ] **Fase 5 — Limpieza**: eliminar jQuery y vendor obsoleto, QA final.
