@@ -45,7 +45,7 @@ func renderBase(t *testing.T, modern bool) string {
 func TestBaseTemplateLegacy(t *testing.T) {
 	out := renderBase(t, false)
 	for _, want := range []string{
-		"/css/dist/gophish.css", // legacy stylesheet bundle
+		"/css/dist/gophish.css",  // legacy stylesheet bundle
 		"/js/dist/vendor.min.js", // legacy jQuery/Bootstrap 3 bundle
 		"navbar-inverse",         // Bootstrap 3 navbar
 		"BODY_MARKER",            // page body is rendered
