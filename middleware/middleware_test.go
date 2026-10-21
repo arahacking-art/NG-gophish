@@ -198,6 +198,8 @@ func TestApplySecurityHeaders(t *testing.T) {
 	expected := map[string]string{
 		"Content-Security-Policy": "frame-ancestors 'none';",
 		"X-Frame-Options":         "DENY",
+		"X-Content-Type-Options":  "nosniff",
+		"Referrer-Policy":         "same-origin",
 	}
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	response := httptest.NewRecorder()

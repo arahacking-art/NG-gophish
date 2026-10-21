@@ -183,6 +183,14 @@ func ApplySecurityHeaders(next http.Handler) http.HandlerFunc {
 		csp := "frame-ancestors 'none';"
 		w.Header().Set("Content-Security-Policy", csp)
 		w.Header().Set("X-Frame-Options", "DENY")
+		// Additional hardening headers for internal deployments.
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		w.Header().Set("Referrer-Policy", "same-origin")
+		// Only advertise HSTS when the request was served over TLS so we don't
+		// pin plain-HTTP clients (e.g. the phishing server) to HTTPS.
+		if r.TLS != nil {
+			w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+		}
 		next.ServeHTTP(w, r)
 	}
 }

@@ -1,0 +1,44 @@
+[Unit]
+Description=Gophish - plataforma interna de simulacion de phishing
+Documentation=https://docs.getgophish.com/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gophish
+Group=gophish
+WorkingDirectory=/opt/gophish
+ExecStart=/opt/gophish/gophish --config /opt/gophish/config.json
+Restart=on-failure
+RestartSec=5
+
+# --- Permite escuchar en el puerto 80 sin ser root ---
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+
+# --- Hardening del servicio (systemd sandbox) ---
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+# Gophish necesita escribir la BD SQLite, los certs y config.json en su dir
+ReadWritePaths=/opt/gophish
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

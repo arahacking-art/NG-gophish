@@ -1,0 +1,58 @@
+# Gophish - despliegue interno con Docker Compose
+#
+# - Admin panel: SOLO accesible en el host via 127.0.0.1:3333 (TLS).
+#   Para entrar desde tu equipo usa un tunel SSH:
+#     ssh -L 3333:127.0.0.1:3333 usuario@servidor
+#   y abre https://127.0.0.1:3333
+#
+# - Phishing server: expuesto en el puerto 80 de todas las interfaces
+#   (las landing pages tienen que ser alcanzables por los objetivos internos).
+#
+# Todo el estado (BD SQLite + certificados) se guarda en el volumen `gophish-data`.
+
+services:
+  gophish:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gophish-internal:latest
+    container_name: gophish
+    restart: unless-stopped
+    ports:
+      # Admin: SOLO loopback del host -> nunca expuesto en la red
+      - "127.0.0.1:3333:3333"
+      # Phishing server: accesible en la LAN interna
+      - "80:80"
+    environment:
+      # El contenedor tiene que escuchar en 0.0.0.0 para que el mapeo de puertos
+      # funcione; el aislamiento del admin lo da el "127.0.0.1:" del mapeo de arriba.
+      ADMIN_LISTEN_URL: "0.0.0.0:3333"
+      ADMIN_USE_TLS: "true"
+      ADMIN_CERT_PATH: "/opt/gophish/data/gophish_admin.crt"
+      ADMIN_KEY_PATH: "/opt/gophish/data/gophish_admin.key"
+      ADMIN_TRUSTED_ORIGINS: ""
+      PHISH_LISTEN_URL: "0.0.0.0:80"
+      PHISH_USE_TLS: "false"
+      CONTACT_ADDRESS: "CAMBIAME@tu-dominio.interno"
+      DB_NAME: "sqlite3"
+      DB_FILE_PATH: "/opt/gophish/data/gophish.db"
+      # Contrasena de admin inicial fija (opcional). Si la quitas, Gophish
+      # genera una aleatoria y la imprime en los logs en el primer arranque.
+      # GOPHISH_INITIAL_ADMIN_PASSWORD: "cambialoYa"
+    volumes:
+      - gophish-data:/opt/gophish/data
+    # Hardening del contenedor
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  gophish-data:
