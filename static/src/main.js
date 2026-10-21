@@ -5,6 +5,8 @@
 
 import * as bootstrap from 'bootstrap'
 
+import { initTheme } from './theme.js'
+
 import './styles/main.scss'
 
 // Exponer Bootstrap en window para el codigo de pagina que aun no es modular
@@ -21,6 +23,9 @@ function initBootstrapWidgets(root = document) {
   })
 }
 
-document.addEventListener('DOMContentLoaded', () => initBootstrapWidgets())
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme()
+  initBootstrapWidgets()
+})
 
 export { bootstrap, initBootstrapWidgets }

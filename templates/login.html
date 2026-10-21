@@ -1,58 +1,69 @@
 {{ define "base" }}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gophish - Open-Source Phishing Toolkit">
-    <meta name="author" content="Jordan Wright (http://github.com/jordan-wright)">
+    <meta name="description" content="NG-gophish - Open-Source Phishing Toolkit">
     <link rel="shortcut icon" href="/images/favicon.ico">
 
     <title>Gophish - {{ .Title }}</title>
 
-    <link href="/css/dist/gophish.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,700' rel='stylesheet' type='text/css'>
+    <!-- Apply the saved/system theme before first paint to avoid a flash. -->
+    <script>
+        (function () {
+            var theme = null;
+            try { theme = localStorage.getItem('ng-theme'); } catch (e) {}
+            if (!theme) {
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
+    <link href="/dist/main.css" rel="stylesheet">
 </head>
 
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img class="navbar-logo" src="/images/logo_inv_small.png" />
-                <a class="navbar-brand" href="/">&nbsp;gophish</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a id="login-button" href="/login">
-                            <button type="button" class="btn btn-primary">Login</button>
-                        </a>
-                    </li>
-                </ul>
+<body class="ng-auth">
+    <button type="button" class="btn btn-outline-secondary ng-theme-toggle" data-ng-theme-toggle
+        aria-label="Cambiar tema">
+        <i class="bi bi-moon-stars-fill"></i>
+    </button>
+
+    <main class="ng-auth-main">
+        <div class="card ng-auth-card">
+            <div class="card-body p-4 p-sm-5">
+                <div class="text-center mb-4">
+                    <img class="ng-auth-logo mb-3" src="/images/logo_purple.png" alt="Gophish">
+                    <h1 class="h4 fw-semibold mb-1">Please sign in</h1>
+                    <p class="text-body-secondary small mb-0">Gophish administration</p>
+                </div>
+
+                {{template "flashes" .Flashes}}
+
+                <form action="" method="POST" novalidate>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="username" name="username"
+                            placeholder="Username" autocomplete="username" required autofocus>
+                        <label for="username"><i class="bi bi-person me-1"></i> Username</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Password" autocomplete="current-password" required>
+                        <label for="password"><i class="bi bi-lock me-1"></i> Password</label>
+                    </div>
+                    <input type="hidden" name="csrf_token" value="{{.Token}}" />
+                    <button class="btn btn-primary btn-lg w-100" type="submit">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign in
+                    </button>
+                </form>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <form class="form-signin" action="" method="POST">
-            <img id="logo" src="/images/logo_purple.png" />
-            <h2 class="form-signin-heading">Please sign in</h2>
-            {{template "flashes" .Flashes}}
-            <input type="text" name="username" class="form-control top-input" placeholder="Username" required autofocus>
-            <input type="password" name="password" class="form-control bottom-input" placeholder="Password" autocomplete="off" required>
-            <input type="hidden" name="csrf_token" value="{{.Token}}" />
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
-    </div>
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/js/dist/vendor.min.js"></script>
+    </main>
+
+    <script type="module" src="/dist/main.js"></script>
 </body>
 
 </html>

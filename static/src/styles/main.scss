@@ -27,6 +27,9 @@ $enable-negative-margins: true;
 // ---------------------------------------------------------------------------
 @import "bootstrap/scss/bootstrap";
 
+// Iconos oficiales de Bootstrap 5 (sustituyen a Font Awesome 4).
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
 // ---------------------------------------------------------------------------
 // 3) Tokens expuestos como CSS custom properties (para JS/temas futuros)
 // ---------------------------------------------------------------------------
@@ -50,4 +53,45 @@ body {
 // Tarjetas con un poco mas de aire, estetica moderna.
 .card {
   box-shadow: var(--bs-box-shadow-sm);
+}
+
+// ---------------------------------------------------------------------------
+// 5) Pantallas de autenticacion (login, reset)
+// ---------------------------------------------------------------------------
+.ng-auth {
+  background:
+    radial-gradient(circle at 15% 20%, rgba($primary, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba($info, 0.14), transparent 45%),
+    var(--bs-body-bg);
+}
+
+.ng-auth-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.ng-auth-card {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--bs-border-color-translucent);
+  box-shadow: var(--bs-box-shadow-lg);
+}
+
+.ng-auth-logo {
+  height: 64px;
+  width: auto;
+}
+
+.ng-theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1030;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
 }
