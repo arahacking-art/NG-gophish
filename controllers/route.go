@@ -255,6 +255,7 @@ func (as *AdminServer) Settings(w http.ResponseWriter, r *http.Request) {
 	case r.Method == "GET":
 		params := newTemplateParams(r)
 		params.Title = "Settings"
+		params.Modern = true
 		session := ctx.Get(r, "session").(*sessions.Session)
 		session.Save(r, w)
 		getTemplate(w, "settings").ExecuteTemplate(w, "base", params)
@@ -335,6 +336,7 @@ func (as *AdminServer) handleInvalidLogin(w http.ResponseWriter, r *http.Request
 func (as *AdminServer) Webhooks(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Webhooks"
+	params.Modern = true
 	getTemplate(w, "webhooks").ExecuteTemplate(w, "base", params)
 }
 
