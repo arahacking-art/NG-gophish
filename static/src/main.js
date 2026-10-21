@@ -23,8 +23,20 @@ function initBootstrapWidgets(root = document) {
   })
 }
 
+// Marca como activo el enlace del sidebar que corresponde a la ruta actual.
+function initActiveNav() {
+  const path = window.location.pathname
+  document.querySelectorAll('.ng-nav .nav-link').forEach((link) => {
+    const href = link.getAttribute('href')
+    if (!href || href.startsWith('http')) return
+    const isActive = href === '/' ? path === '/' : path.startsWith(href)
+    if (isActive) link.classList.add('active')
+  })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme()
+  initActiveNav()
   initBootstrapWidgets()
 })
 

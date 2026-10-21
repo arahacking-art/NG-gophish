@@ -45,3 +45,32 @@
     </div>
 </div>
 {{end}}
+
+{{define "nav_modern"}}
+<nav class="nav flex-column ng-nav" aria-label="Main">
+    <a class="nav-link" href="/"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+    <a class="nav-link" href="/campaigns"><i class="bi bi-send"></i><span>Campaigns</span></a>
+    <a class="nav-link" href="/groups"><i class="bi bi-people"></i><span>Users &amp; Groups</span></a>
+    <a class="nav-link" href="/templates"><i class="bi bi-envelope"></i><span>Email Templates</span></a>
+    <a class="nav-link" href="/landing_pages"><i class="bi bi-file-earmark-code"></i><span>Landing Pages</span></a>
+    <a class="nav-link" href="/sending_profiles"><i class="bi bi-hdd-network"></i><span>Sending Profiles</span></a>
+    <a class="nav-link" href="/settings"><i class="bi bi-gear"></i><span>Account Settings</span></a>
+    {{if .ModifySystem}}
+    <a class="nav-link" href="/users">
+        <i class="bi bi-person-badge"></i><span>User Management</span>
+        <span class="badge text-bg-secondary ms-auto">Admin</span>
+    </a>
+    <a class="nav-link" href="/webhooks">
+        <i class="bi bi-diagram-3"></i><span>Webhooks</span>
+        <span class="badge text-bg-secondary ms-auto">Admin</span>
+    </a>
+    {{end}}
+    <hr class="my-2">
+    <a class="nav-link" href="https://docs.getgophish.com/user-guide/" target="_blank" rel="noopener">
+        <i class="bi bi-book"></i><span>User Guide</span>
+    </a>
+    <a class="nav-link" href="https://docs.getgophish.com/api-documentation/" target="_blank" rel="noopener">
+        <i class="bi bi-code-slash"></i><span>API Documentation</span>
+    </a>
+</nav>
+{{end}}

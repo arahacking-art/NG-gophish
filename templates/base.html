@@ -1,4 +1,102 @@
 {{ define "base" }}
+{{ if .Modern }}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NG-gophish - Phishing Toolkit">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+
+    <title>{{ .Title }} - Gophish</title>
+
+    <!-- Apply the saved/system theme before first paint to avoid a flash. -->
+    <script>
+        (function () {
+            var theme = null;
+            try { theme = localStorage.getItem('ng-theme'); } catch (e) {}
+            if (!theme) {
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
+    <link href="/dist/main.css" rel="stylesheet">
+    <script>
+        {{if .User}}
+        var user = { api_key: {{ .User.ApiKey }}, username: {{ .User.Username }} }
+        {{end}}
+        {{if .Token}}
+        var csrf_token = {{.Token}}
+        {{end}}
+    </script>
+</head>
+
+<body class="ng-app">
+    <nav class="navbar navbar-expand-md fixed-top ng-navbar">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#ngSidebar"
+                aria-controls="ngSidebar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <img class="ng-navbar-logo" src="/images/logo_inv_small.png" alt="">
+                <span>gophish</span>
+            </a>
+            <div class="ms-auto d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-outline-light btn-sm ng-navbar-icon" data-ng-theme-toggle
+                    aria-label="Cambiar tema">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+                {{if .User}}
+                <div class="dropdown">
+                    <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i>{{.User.Username}}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/settings"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+                        </li>
+                    </ul>
+                </div>
+                {{else}}
+                <a class="btn btn-primary btn-sm" href="/login">Login</a>
+                {{end}}
+            </div>
+        </div>
+    </nav>
+
+    <div class="ng-layout">
+        <aside class="ng-sidebar offcanvas-md offcanvas-start" tabindex="-1" id="ngSidebar"
+            aria-labelledby="ngSidebarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="ngSidebarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#ngSidebar"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body ng-sidebar-body">
+                {{template "nav_modern" .}}
+            </div>
+        </aside>
+
+        <main class="ng-main">
+            {{template "body" .}}
+        </main>
+    </div>
+
+    <script type="module" src="/dist/main.js"></script>
+    {{template "scripts" .}}
+</body>
+
+</html>
+{{ else }}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,4 +168,5 @@
 </body>
 
 </html>
+{{ end }}
 {{ end }}

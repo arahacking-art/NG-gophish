@@ -179,6 +179,10 @@ type templateParams struct {
 	Token        string
 	Version      string
 	ModifySystem bool
+	// Modern toggles the NG-gophish Bootstrap 5 chrome for a given page.
+	// It is flipped on per-route as each screen is migrated; pages that have
+	// not been migrated yet keep rendering the legacy Bootstrap 3 UI.
+	Modern bool
 }
 
 // newTemplateParams returns the default template parameters for a user and
