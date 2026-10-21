@@ -297,6 +297,7 @@ func (as *AdminServer) Settings(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) UserManagement(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "User Management"
+	params.Modern = true
 	getTemplate(w, "users").ExecuteTemplate(w, "base", params)
 }
 
