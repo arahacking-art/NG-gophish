@@ -20,6 +20,7 @@ export default defineConfig({
         settings: resolve(__dirname, 'static/src/pages/settings.js'),
         users: resolve(__dirname, 'static/src/pages/users.js'),
         webhooks: resolve(__dirname, 'static/src/pages/webhooks.js'),
+        reset_password: resolve(__dirname, 'static/src/pages/reset_password.js'),
       },
       output: {
         entryFileNames: '[name].js',
