@@ -16,6 +16,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'static/src/main.js'),
+        dashboard: resolve(__dirname, 'static/src/pages/dashboard.js'),
+        settings: resolve(__dirname, 'static/src/pages/settings.js'),
+        users: resolve(__dirname, 'static/src/pages/users.js'),
+        webhooks: resolve(__dirname, 'static/src/pages/webhooks.js'),
       },
       output: {
         entryFileNames: '[name].js',
