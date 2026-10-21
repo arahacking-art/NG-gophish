@@ -1,7 +1,6 @@
 // NG-gophish - pagina Webhooks (Vanilla JS + Bootstrap 5 + Grid.js).
 import { api, errorFlash, successFlash, modalError, escapeHtml } from '../api.js'
 import { Grid, html } from 'gridjs'
-import 'gridjs/dist/theme/mermaid.css'
 import { Modal, Tooltip } from 'bootstrap'
 
 let webhooks = []

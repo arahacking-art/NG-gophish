@@ -204,6 +204,7 @@ func newTemplateParams(r *http.Request) templateParams {
 func (as *AdminServer) Base(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Dashboard"
+	params.Modern = true
 	getTemplate(w, "dashboard").ExecuteTemplate(w, "base", params)
 }
 
