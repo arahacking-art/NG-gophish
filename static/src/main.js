@@ -6,8 +6,12 @@
 import * as bootstrap from 'bootstrap'
 
 import { initTheme } from './theme.js'
+import { exposeGlobals } from './api.js'
 
 import './styles/main.scss'
+
+// Expone api/helpers en window para el codigo de pagina en transicion.
+exposeGlobals()
 
 // Exponer Bootstrap en window para el codigo de pagina que aun no es modular
 // (se ira eliminando conforme avancen las fases de migracion).
