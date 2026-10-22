@@ -179,10 +179,6 @@ type templateParams struct {
 	Token        string
 	Version      string
 	ModifySystem bool
-	// Modern toggles the NG-gophish Bootstrap 5 chrome for a given page.
-	// It is flipped on per-route as each screen is migrated; pages that have
-	// not been migrated yet keep rendering the legacy Bootstrap 3 UI.
-	Modern bool
 }
 
 // newTemplateParams returns the default template parameters for a user and
@@ -204,7 +200,6 @@ func newTemplateParams(r *http.Request) templateParams {
 func (as *AdminServer) Base(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Dashboard"
-	params.Modern = true
 	getTemplate(w, "dashboard").ExecuteTemplate(w, "base", params)
 }
 
@@ -212,7 +207,6 @@ func (as *AdminServer) Base(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) Campaigns(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Campaigns"
-	params.Modern = true
 	getTemplate(w, "campaigns").ExecuteTemplate(w, "base", params)
 }
 
@@ -220,7 +214,6 @@ func (as *AdminServer) Campaigns(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) CampaignID(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Campaign Results"
-	params.Modern = true
 	getTemplate(w, "campaign_results").ExecuteTemplate(w, "base", params)
 }
 
@@ -228,7 +221,6 @@ func (as *AdminServer) CampaignID(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) Templates(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Email Templates"
-	params.Modern = true
 	getTemplate(w, "templates").ExecuteTemplate(w, "base", params)
 }
 
@@ -236,7 +228,6 @@ func (as *AdminServer) Templates(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) Groups(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Users & Groups"
-	params.Modern = true
 	getTemplate(w, "groups").ExecuteTemplate(w, "base", params)
 }
 
@@ -244,7 +235,6 @@ func (as *AdminServer) Groups(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) LandingPages(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Landing Pages"
-	params.Modern = true
 	getTemplate(w, "landing_pages").ExecuteTemplate(w, "base", params)
 }
 
@@ -252,7 +242,6 @@ func (as *AdminServer) LandingPages(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) SendingProfiles(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Sending Profiles"
-	params.Modern = true
 	getTemplate(w, "sending_profiles").ExecuteTemplate(w, "base", params)
 }
 
@@ -262,7 +251,6 @@ func (as *AdminServer) Settings(w http.ResponseWriter, r *http.Request) {
 	case r.Method == "GET":
 		params := newTemplateParams(r)
 		params.Title = "Settings"
-		params.Modern = true
 		session := ctx.Get(r, "session").(*sessions.Session)
 		session.Save(r, w)
 		getTemplate(w, "settings").ExecuteTemplate(w, "base", params)
@@ -303,7 +291,6 @@ func (as *AdminServer) Settings(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) UserManagement(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "User Management"
-	params.Modern = true
 	getTemplate(w, "users").ExecuteTemplate(w, "base", params)
 }
 
@@ -344,7 +331,6 @@ func (as *AdminServer) handleInvalidLogin(w http.ResponseWriter, r *http.Request
 func (as *AdminServer) Webhooks(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Webhooks"
-	params.Modern = true
 	getTemplate(w, "webhooks").ExecuteTemplate(w, "base", params)
 }
 
