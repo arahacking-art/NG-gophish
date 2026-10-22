@@ -233,6 +233,7 @@ func (as *AdminServer) Templates(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) Groups(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Users & Groups"
+	params.Modern = true
 	getTemplate(w, "groups").ExecuteTemplate(w, "base", params)
 }
 
