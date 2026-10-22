@@ -29,3 +29,6 @@ gophish_admin.key
 *.exe
 gophish.db*
 gophish
+
+# NG-gophish build output (generado por Vite)
+/static/dist/

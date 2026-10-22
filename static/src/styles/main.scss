@@ -1,0 +1,179 @@
+// NG-gophish - hoja de estilos principal.
+//
+// Estructura: tokens de marca -> Bootstrap 5 -> ajustes propios.
+// El modo oscuro usa el soporte nativo de Bootstrap 5.3 (data-bs-theme="dark").
+
+// ---------------------------------------------------------------------------
+// 1) Tokens de marca (overrides de variables SCSS de Bootstrap, antes del import)
+// ---------------------------------------------------------------------------
+$primary:   #3b7ddd;   // azul NG-gophish
+$success:   #22c55e;
+$info:      #0ea5e9;
+$warning:   #f59e0b;
+$danger:    #ef4444;
+
+$font-family-sans-serif: "Source Sans Pro", system-ui, -apple-system, "Segoe UI",
+  Roboto, "Helvetica Neue", Arial, sans-serif;
+
+$border-radius:    0.5rem;
+$border-radius-sm: 0.375rem;
+$border-radius-lg: 0.75rem;
+
+$enable-shadows: true;
+$enable-negative-margins: true;
+
+// ---------------------------------------------------------------------------
+// 2) Bootstrap 5 completo
+// ---------------------------------------------------------------------------
+@import "bootstrap/scss/bootstrap";
+
+// Iconos oficiales de Bootstrap 5 (sustituyen a Font Awesome 4).
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+// ---------------------------------------------------------------------------
+// 3) Tokens expuestos como CSS custom properties (para JS/temas futuros)
+// ---------------------------------------------------------------------------
+:root {
+  --ng-sidebar-width: 240px;
+  --ng-navbar-height: 56px;
+}
+
+// ---------------------------------------------------------------------------
+// 4) Ajustes propios base (se iran ampliando por fase)
+// ---------------------------------------------------------------------------
+body {
+  min-height: 100vh;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+// Tarjetas con un poco mas de aire, estetica moderna.
+.card {
+  box-shadow: var(--bs-box-shadow-sm);
+}
+
+// ---------------------------------------------------------------------------
+// 5) Pantallas de autenticacion (login, reset)
+// ---------------------------------------------------------------------------
+.ng-auth {
+  background:
+    radial-gradient(circle at 15% 20%, rgba($primary, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba($info, 0.14), transparent 45%),
+    var(--bs-body-bg);
+}
+
+.ng-auth-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.ng-auth-card {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--bs-border-color-translucent);
+  box-shadow: var(--bs-box-shadow-lg);
+}
+
+.ng-auth-logo {
+  height: 64px;
+  width: auto;
+}
+
+.ng-theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1030;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+}
+
+// ---------------------------------------------------------------------------
+// 6) App shell (navbar + sidebar + contenido) para paginas .Modern
+// ---------------------------------------------------------------------------
+.ng-navbar {
+  height: var(--ng-navbar-height);
+  background-color: #1f2a44;           // barra de marca, igual en claro y oscuro
+  box-shadow: var(--bs-box-shadow-sm);
+
+  .navbar-brand {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .ng-navbar-logo {
+    height: 28px;
+    width: auto;
+  }
+
+  .ng-navbar-icon {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+.ng-layout {
+  padding-top: var(--ng-navbar-height);
+}
+
+.ng-sidebar {
+  width: var(--ng-sidebar-width);
+
+  // En pantallas medianas+ queda fija bajo la navbar (offcanvas solo en movil).
+  @include media-breakpoint-up(md) {
+    position: fixed;
+    top: var(--ng-navbar-height);
+    bottom: 0;
+    left: 0;
+    border-right: 1px solid var(--bs-border-color);
+    background-color: var(--bs-tertiary-bg);
+    overflow-y: auto;
+  }
+}
+
+.ng-main {
+  padding: 1.5rem;
+
+  @include media-breakpoint-up(md) {
+    margin-left: var(--ng-sidebar-width);
+  }
+}
+
+.ng-nav {
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--bs-body-color);
+    border-radius: var(--bs-border-radius);
+    padding: 0.55rem 0.75rem;
+
+    i {
+      font-size: 1.05rem;
+      opacity: 0.85;
+    }
+
+    &:hover {
+      background-color: var(--bs-secondary-bg);
+    }
+
+    &.active {
+      background-color: rgba($primary, 0.12);
+      color: var(--bs-primary);
+      font-weight: 600;
+    }
+  }
+}

@@ -1,18 +1,15 @@
 # ---------------------------------------------------------------------------
-# Gophish - Dockerfile para despliegue interno
+# NG-gophish - Dockerfile para despliegue interno
 # ---------------------------------------------------------------------------
 
-# 1) Minificado de assets de cliente (JS/CSS)
-#    Node 18 LTS + flag de OpenSSL legacy para que webpack 4 / gulp 4 funcionen.
-FROM node:18-bullseye AS build-js
-
-ENV NODE_OPTIONS=--openssl-legacy-provider
-RUN npm install gulp gulp-cli -g
+# 1) Build de assets de cliente con Vite (Bootstrap 5, sin jQuery).
+FROM node:20-bookworm AS build-js
 
 WORKDIR /build
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
-RUN npm install --only=dev
-RUN gulp
+RUN npm run build
 
 
 # 2) Compilacion del binario Go (version pineada, reproducible)
@@ -36,11 +33,10 @@ RUN apt-get update && \
 
 WORKDIR /opt/gophish
 COPY --from=build-golang /src/ ./
-COPY --from=build-js /build/static/js/dist/ ./static/js/dist/
-COPY --from=build-js /build/static/css/dist/ ./static/css/dist/
+# Assets compilados por Vite (el servidor Go los sirve en /dist/*).
+COPY --from=build-js /build/static/dist/ ./static/dist/
 
 # Directorio persistente para BD y certificados (montado como volumen en compose).
-# Se crea aqui con el dueno correcto para que el volumen herede esos permisos.
 RUN mkdir -p /opt/gophish/data && chown -R app:app /opt/gophish
 
 # Permite escuchar en el puerto 80 sin privilegios de root

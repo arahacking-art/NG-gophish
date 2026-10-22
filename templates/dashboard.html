@@ -1,70 +1,53 @@
 {{define "body"}}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">
-        Dashboard
-    </h1>
-    <div id="loading">
-        <i class="fa fa-spinner fa-spin fa-4x"></i>
-    </div>
-    {{template "flashes" .Flashes}}
-    <div id="emptyMessage" style="display:none;">
-        <div class="alert alert-info">
-            No campaigns created yet. Let's create one!
+<h1 class="h3 mb-4">Dashboard</h1>
+
+<div id="flashes">{{template "flashes" .Flashes}}</div>
+
+<div id="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+</div>
+
+<div id="emptyMessage" class="d-none">
+    <div class="alert alert-info">No campaigns created yet. <a href="/campaigns" class="alert-link">Let's create
+            one!</a></div>
+</div>
+
+<div id="dashboard" class="d-none">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div id="overview_chart" style="height:260px;"></div>
         </div>
     </div>
-    <div id="dashboard" style="display:none;">
-        <div class="row">
-            <div id="overview_chart" style="height:200px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md">
+            <div class="card h-100"><div class="card-body p-2"><div id="sent_chart" style="height:150px;"></div></div></div>
         </div>
-        <div class="row">
-            <div style="height:200px;" class="col-lg-1 col-md-1"></div>
-            <div id="sent_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="opened_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="clicked_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="submitted_data_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="email_reported_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div style="height:200px;" class="col-lg-1 col-md-1"></div>
+        <div class="col-6 col-md">
+            <div class="card h-100"><div class="card-body p-2"><div id="opened_chart" style="height:150px;"></div></div></div>
         </div>
-        <div class="row">
-            <h2>Recent Campaigns</h2>
+        <div class="col-6 col-md">
+            <div class="card h-100"><div class="card-body p-2"><div id="clicked_chart" style="height:150px;"></div></div></div>
         </div>
-        <div class="row">
-            <a href="/campaigns">
-                <button type="button" class="btn btn-primary">View All</button>
-            </a>
+        <div class="col-6 col-md">
+            <div class="card h-100"><div class="card-body p-2"><div id="submitted_data_chart" style="height:150px;"></div></div></div>
         </div>
-        &nbsp;&nbsp;
-        <div class="row">
-            <table id="campaignTable" class="table">
-                <thead>
-                    <tr>
-                        <th class="col-md-2 col-sm-2">Name</th>
-                        <th class="col-md-2 col-sm-2">Created Date</th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-envelope-o"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-envelope-open-o"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-mouse-pointer"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-exclamation-circle"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-bullhorn"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">Status</th>
-                        <th class="col-md-2 col-sm-2 no-sort"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <div class="col-6 col-md">
+            <div class="card h-100"><div class="card-body p-2"><div id="email_reported_chart" style="height:150px;"></div></div></div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="h5 mb-0">Recent Campaigns</h2>
+        <a href="/campaigns" class="btn btn-sm btn-primary"><i class="bi bi-collection me-1"></i>View All</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div id="campaignTable"></div>
         </div>
     </div>
 </div>
-{{end}} {{define "scripts"}}
-<script src="/js/dist/app/dashboard.min.js"></script>
+{{end}}
+{{define "scripts"}}
+<script type="module" src="/dist/dashboard.js"></script>
 {{end}}
