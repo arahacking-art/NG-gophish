@@ -212,6 +212,7 @@ func (as *AdminServer) Base(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) Campaigns(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Campaigns"
+	params.Modern = true
 	getTemplate(w, "campaigns").ExecuteTemplate(w, "base", params)
 }
 

@@ -8,9 +8,11 @@ import * as bootstrap from 'bootstrap'
 import { initTheme } from './theme.js'
 import { exposeGlobals } from './api.js'
 
-// Theme de Grid.js centralizado aqui (todas las paginas modernas cargan main.css),
-// para que las pantallas con tabla no dupliquen este CSS.
+// CSS de librerias centralizado aqui (todas las paginas modernas cargan main.css),
+// para que las pantallas no dupliquen estos estilos.
 import 'gridjs/dist/theme/mermaid.css'
+import 'tom-select/dist/css/tom-select.bootstrap5.css'
+import 'flatpickr/dist/flatpickr.min.css'
 import './styles/main.scss'
 
 // Expone api/helpers en window para el codigo de pagina en transicion.
