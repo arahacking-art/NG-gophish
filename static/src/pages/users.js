@@ -1,5 +1,6 @@
 // NG-gophish - pagina User Management (Vanilla JS + Bootstrap 5 + Grid.js).
 import { api, errorFlash, successFlash, modalError, escapeHtml } from '../api.js'
+import { confirmDialog, alertDialog } from '../ui.js'
 import { initPasswordStrength } from './passwords.js'
 import { Grid, html } from 'gridjs'
 // El theme de Grid.js se carga de forma centralizada vía main.css (main.js),
@@ -142,12 +143,14 @@ async function deleteUser(id) {
   const user = users.find((x) => x.id == id)
   if (!user) return
   if (user.username === 'admin') {
-    window.alert(`The user account "${user.username}" cannot be deleted.`)
+    await alertDialog({ title: 'Cannot delete', body: `The user account "${user.username}" cannot be deleted.` })
     return
   }
-  const ok = window.confirm(
-    `This will delete the account for "${user.username}" as well as all of the objects they have created.\n\nThis can't be undone! Are you sure?`
-  )
+  const ok = await confirmDialog({
+    title: 'Delete user',
+    body: `This will delete the account for "${user.username}" as well as all of the objects they have created.\n\nThis can't be undone! Are you sure?`,
+    confirmText: 'Delete',
+  })
   if (!ok) return
   try {
     await api.userId.delete(id)
@@ -161,7 +164,12 @@ async function deleteUser(id) {
 async function impersonate(id) {
   const user = users.find((x) => x.id == id)
   if (!user) return
-  const ok = window.confirm(`You will be logged out of your account and logged in as "${user.username}". Continue?`)
+  const ok = await confirmDialog({
+    title: 'Impersonate user',
+    body: `You will be logged out of your account and logged in as "${user.username}". Continue?`,
+    confirmText: 'Continue',
+    confirmClass: 'btn-warning',
+  })
   if (!ok) return
   try {
     const res = await fetch('/impersonate', {

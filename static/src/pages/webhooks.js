@@ -1,5 +1,6 @@
 // NG-gophish - pagina Webhooks (Vanilla JS + Bootstrap 5 + Grid.js).
 import { api, errorFlash, successFlash, modalError, escapeHtml } from '../api.js'
+import { confirmDialog } from '../ui.js'
 import { Grid, html } from 'gridjs'
 import { Modal, Tooltip } from 'bootstrap'
 
@@ -113,7 +114,12 @@ async function editWebhook(id) {
 async function deleteWebhook(id) {
   const wh = webhooks.find((x) => x.id == id)
   if (!wh) return
-  if (!window.confirm(`This will delete the webhook "${wh.name}". Are you sure?`)) return
+  const ok = await confirmDialog({
+    title: 'Delete webhook',
+    body: `This will delete the webhook "${wh.name}". Are you sure?`,
+    confirmText: 'Delete',
+  })
+  if (!ok) return
   try {
     await api.webhookId.delete(id)
     await load()

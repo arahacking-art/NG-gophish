@@ -1,5 +1,6 @@
 // NG-gophish - Dashboard (Vanilla JS + Bootstrap 5 + Apache ECharts + Grid.js).
 import { api, errorFlash, successFlash, escapeHtml } from '../api.js'
+import { confirmDialog } from '../ui.js'
 import { Grid, html } from 'gridjs'
 
 // ECharts modular (solo lo que usamos, para no cargar la libreria entera).
@@ -177,7 +178,7 @@ function renderTable() {
 async function deleteCampaign(id) {
   const c = campaigns.find((x) => x.id == id)
   if (!c) return
-  if (!window.confirm(`Delete "${c.name}"?`)) return
+  if (!(await confirmDialog({ title: 'Delete campaign', body: `Delete "${c.name}"?`, confirmText: 'Delete' }))) return
   try {
     const data = await api.campaignId.delete(id)
     successFlash(data.message)
