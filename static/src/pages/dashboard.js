@@ -6,9 +6,9 @@ import { Grid, html } from 'gridjs'
 // ECharts modular (solo lo que usamos, para no cargar la libreria entera).
 import * as echarts from 'echarts/core'
 import { LineChart, PieChart } from 'echarts/charts'
-import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
+import { TitleComponent, TooltipComponent, GridComponent, GraphicComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
-echarts.use([LineChart, PieChart, TitleComponent, TooltipComponent, GridComponent, CanvasRenderer])
+echarts.use([LineChart, PieChart, TitleComponent, TooltipComponent, GridComponent, GraphicComponent, CanvasRenderer])
 
 // Colores por estado (heredados de la UI original).
 const STATUS_COLORS = {
@@ -31,7 +31,7 @@ const STATUS_BADGE = {
 }
 
 let campaigns = []
-const charts = []
+const charts = {}
 
 function themeTextColor() {
   return document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#adb5bd' : '#495057'
@@ -51,7 +51,7 @@ function initChart(elId) {
   const existing = echarts.getInstanceByDom(el)
   if (existing) existing.dispose()
   const chart = echarts.init(el, null, { renderer: 'canvas' })
-  charts.push(chart)
+  charts[elId] = chart
   return chart
 }
 
@@ -211,7 +211,7 @@ async function init() {
       if (btn) deleteCampaign(btn.dataset.id)
     })
 
-    window.addEventListener('resize', () => charts.forEach((c) => c.resize()))
+    window.addEventListener('resize', () => Object.values(charts).forEach((c) => c.resize()))
     // Re-dibuja los charts al cambiar el tema (colores de ejes/texto).
     new MutationObserver(() => renderAll()).observe(document.documentElement, {
       attributes: true, attributeFilter: ['data-bs-theme'],

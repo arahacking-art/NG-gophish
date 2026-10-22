@@ -8,9 +8,9 @@ import { UAParser } from 'ua-parser-js'
 
 import * as echarts from 'echarts/core'
 import { PieChart, ScatterChart } from 'echarts/charts'
-import { TitleComponent, TooltipComponent, GridComponent, GeoComponent } from 'echarts/components'
+import { TitleComponent, TooltipComponent, GridComponent, GeoComponent, GraphicComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
-echarts.use([PieChart, ScatterChart, TitleComponent, TooltipComponent, GridComponent, GeoComponent, CanvasRenderer])
+echarts.use([PieChart, ScatterChart, TitleComponent, TooltipComponent, GridComponent, GeoComponent, GraphicComponent, CanvasRenderer])
 
 // URL del GeoJSON del mundo (se carga solo si el mapa esta activado).
 import worldMapUrl from '../assets/world.json?url'

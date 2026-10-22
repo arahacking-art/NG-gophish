@@ -16,7 +16,7 @@ func (as *Server) Reset(w http.ResponseWriter, r *http.Request) {
 		u.ApiKey = auth.GenerateSecureKey(auth.APIKeyLength)
 		err := models.PutUser(&u)
 		if err != nil {
-			http.Error(w, "Error setting API Key", http.StatusInternalServerError)
+			JSONResponse(w, models.Response{Success: false, Message: "Error setting API Key"}, http.StatusInternalServerError)
 		} else {
 			JSONResponse(w, models.Response{Success: true, Message: "API Key successfully reset!", Data: u.ApiKey}, http.StatusOK)
 		}

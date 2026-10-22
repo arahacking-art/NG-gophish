@@ -58,9 +58,11 @@ type PhishingServer struct {
 // provided options applied.
 func NewPhishingServer(config config.PhishServer, options ...PhishingServerOption) *PhishingServer {
 	defaultServer := &http.Server{
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		Addr:         config.ListenURL,
+		ReadTimeout:       10 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       60 * time.Second,
+		Addr:              config.ListenURL,
 	}
 	ps := &PhishingServer{
 		server: defaultServer,

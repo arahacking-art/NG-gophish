@@ -102,10 +102,11 @@ func (s *SMTP) Validate() error {
 	return err
 }
 
+var fromAddressRegex = regexp.MustCompile(`^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,18})$`)
+
 // validateFromAddress validates
 func validateFromAddress(email string) bool {
-	r, _ := regexp.Compile("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,18})$")
-	return r.MatchString(email)
+	return fromAddressRegex.MatchString(email)
 }
 
 // GetDialer returns a dialer for the given SMTP profile

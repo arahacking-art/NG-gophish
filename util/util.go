@@ -10,7 +10,6 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math/big"
 	"net/http"
 	"net/mail"
@@ -20,7 +19,6 @@ import (
 
 	log "github.com/gophish/gophish/logger"
 	"github.com/gophish/gophish/models"
-	"github.com/jordan-wright/email"
 )
 
 var (
@@ -29,19 +27,6 @@ var (
 	emailRegex     = regexp.MustCompile(`(?i)email`)
 	positionRegex  = regexp.MustCompile(`(?i)position`)
 )
-
-// ParseMail takes in an HTTP Request and returns an Email object
-// TODO: This function will likely be changed to take in a []byte
-func ParseMail(r *http.Request) (email.Email, error) {
-	e := email.Email{}
-	m, err := mail.ReadMessage(r.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-	body, err := ioutil.ReadAll(m.Body)
-	e.HTML = body
-	return e, err
-}
 
 // ParseCSV contains the logic to parse the user provided csv file containing Target entries
 func ParseCSV(r *http.Request) ([]models.Target, error) {
@@ -55,16 +40,23 @@ func ParseCSV(r *http.Request) ([]models.Target, error) {
 		if err == io.EOF {
 			break
 		}
+		if err != nil {
+			return ts, err
+		}
 		// Skip the "submit" part
 		if part.FileName() == "" {
+			part.Close()
 			continue
 		}
-		defer part.Close()
 		reader := csv.NewReader(part)
 		reader.TrimLeadingSpace = true
 		record, err := reader.Read()
-		if err == io.EOF {
-			break
+		if err != nil {
+			part.Close()
+			if err == io.EOF {
+				break
+			}
+			return ts, err
 		}
 		fi := -1
 		li := -1
@@ -87,13 +79,18 @@ func ParseCSV(r *http.Request) ([]models.Target, error) {
 			}
 		}
 		if fi == -1 && li == -1 && ei == -1 && pi == -1 {
+			part.Close()
 			continue
 		}
 		for {
 			record, err := reader.Read()
-			if err == io.EOF {
+			if err != nil {
 				break
 			}
+			fn = ""
+			ln = ""
+			ea = ""
+			ps = ""
 			if fi != -1 && len(record) > fi {
 				fn = record[fi]
 			}
@@ -120,6 +117,7 @@ func ParseCSV(r *http.Request) ([]models.Target, error) {
 			}
 			ts = append(ts, t)
 		}
+		part.Close()
 	}
 	return ts, nil
 }

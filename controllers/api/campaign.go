@@ -38,7 +38,7 @@ func (as *Server) Campaigns(w http.ResponseWriter, r *http.Request) {
 		}
 		// If the campaign is scheduled to launch immediately, send it to the worker.
 		// Otherwise, the worker will pick it up at the scheduled time
-		if c.Status == models.CampaignInProgress {
+		if c.Status == models.CampaignInProgress && as.worker != nil {
 			go as.worker.LaunchCampaign(c)
 		}
 		JSONResponse(w, c, http.StatusCreated)

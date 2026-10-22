@@ -14,18 +14,17 @@
   },
   "devDependencies": {
     "sass": "^1.80.6",
-    "vite": "^5.4.10"
+    "vite": "^8.3.5"
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.9",
     "@codemirror/state": "^6.4.1",
     "@codemirror/theme-one-dark": "^6.1.2",
-    "@codemirror/view": "^6.26.3",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "codemirror": "^6.0.1",
-    "echarts": "^5.5.1",
+    "echarts": "^6.1.0",
     "flatpickr": "^4.6.13",
     "gridjs": "^6.2.0",
     "papaparse": "^5.4.1",

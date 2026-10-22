@@ -23,6 +23,8 @@ type Attachment struct {
 	vanillaFile bool   // Vanilla file has no template variables
 }
 
+var urlEscapedVarRegex = regexp.MustCompile(`%7b%7b\.([a-zA-Z]+)%7d%7d`)
+
 // Validate ensures that the provided attachment uses the supported template variables correctly.
 func (a Attachment) Validate() error {
 	vc := ValidationContext{
@@ -87,11 +89,13 @@ func (a *Attachment) ApplyTemplate(ptx PhishingTemplateContext) (io.Reader, erro
 		for _, zipFile := range zipReader.File {
 			ff, err := zipFile.Open()
 			if err != nil {
+				zipWriter.Close()
 				return nil, err
 			}
-			defer ff.Close()
 			contents, err := ioutil.ReadAll(ff)
+			ff.Close()
 			if err != nil {
+				zipWriter.Close()
 				return nil, err
 			}
 			subFileExtension := filepath.Ext(zipFile.Name)
@@ -99,8 +103,7 @@ func (a *Attachment) ApplyTemplate(ptx PhishingTemplateContext) (io.Reader, erro
 			if subFileExtension == ".xml" || subFileExtension == ".rels" { // Ignore other files, e.g binary ones and images
 				// First we look for instances where Word has URL escaped our template variables. This seems to happen when inserting a remote image, converting {{.Foo}} to %7b%7b.foo%7d%7d.
 				// See https://stackoverflow.com/questions/68287630/disable-url-encoding-for-includepicture-in-microsoft-word
-				rx, _ := regexp.Compile("%7b%7b.([a-zA-Z]+)%7d%7d")
-				contents := rx.ReplaceAllFunc(contents, func(m []byte) []byte {
+				contents := urlEscapedVarRegex.ReplaceAllFunc(contents, func(m []byte) []byte {
 					d, err := url.QueryUnescape(string(m))
 					if err != nil {
 						return m

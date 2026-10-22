@@ -82,7 +82,7 @@ if [ -n "${DB_FILE_PATH+set}" ] ; then
 fi
 
 echo "Runtime configuration: "
-cat config.json
+jq 'if .db_name == "mysql" then .db_path = "***REDACTED***" else . end' config.json
 
 # start gophish
 ./gophish

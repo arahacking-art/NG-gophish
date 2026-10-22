@@ -80,10 +80,15 @@ function openModal(id) {
 
 function openCopy(id) {
   const page = pages.find((p) => p.id == id)
+  if (!page) return
   resetForm()
   el('modalSubmit').onclick = () => save(-1)
   el('pageModalLabel').textContent = 'New Landing Page'
   el('name').value = 'Copy of ' + page.name
+  el('capture_credentials_checkbox').checked = page.capture_credentials
+  el('capture_passwords_checkbox').checked = page.capture_passwords
+  el('redirect_url_input').value = page.redirect_url || ''
+  toggleCapture()
   ensureEditor(page.html || '')
   modal.show()
 }

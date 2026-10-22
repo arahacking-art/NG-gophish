@@ -9,28 +9,33 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goVer: [1.21, 1.22, 1.23]
+        goVer: ['1.26']
 
     steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
     - name: Set up Go ${{ matrix.goVer }}
       uses: actions/setup-go@v5
       with:
         go-version: ${{ matrix.goVer }}
-      id: go
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v4
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
 
-    - name: Get dependencies
+    - name: Build UI assets
       run: |
-        go get -v -t -d ./...
-        go get gopkg.in/check.v1
+        npm ci
+        npm run build
 
-    - name: Build
+    - name: Build Go binary
       run: go build -v .
-    
+
     - name: Format
       run: diff -u <(echo -n) <(gofmt -d .)
-    
+
     - name: Test
       run: go test ./...

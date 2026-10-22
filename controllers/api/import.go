@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gophish/gophish/dialer"
@@ -68,6 +69,8 @@ func (as *Server) ImportEmail(w http.ResponseWriter, r *http.Request) {
 	e, err := email.NewEmailFromReader(strings.NewReader(ir.Content))
 	if err != nil {
 		log.Error(err)
+		JSONResponse(w, models.Response{Success: false, Message: err.Error()}, http.StatusBadRequest)
+		return
 	}
 	// If the user wants to convert links to point to
 	// the landing page, let's make it happen by changing up
@@ -121,7 +124,10 @@ func (as *Server) ImportSite(w http.ResponseWriter, r *http.Request) {
 			InsecureSkipVerify: true,
 		},
 	}
-	client := &http.Client{Transport: tr}
+	client := &http.Client{
+		Transport: tr,
+		Timeout:   10 * time.Second,
+	}
 	resp, err := client.Get(cr.URL)
 	if err != nil {
 		JSONResponse(w, models.Response{Success: false, Message: err.Error()}, http.StatusBadRequest)

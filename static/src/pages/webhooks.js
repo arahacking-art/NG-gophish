@@ -1,5 +1,5 @@
 // NG-gophish - pagina Webhooks (Vanilla JS + Bootstrap 5 + Grid.js).
-import { api, errorFlash, successFlash, modalError, escapeHtml } from '../api.js'
+import { api, errorFlash, successFlash, modalError } from '../api.js'
 import { confirmDialog } from '../ui.js'
 import { Grid, html } from 'gridjs'
 import { Modal, Tooltip } from 'bootstrap'
@@ -78,13 +78,13 @@ async function saveWebhook(id) {
       modal.hide()
       resetForm()
       await load()
-      successFlash(`Webhook "${escapeHtml(wh.name)}" has been updated successfully!`)
+      successFlash(`Webhook "${wh.name}" has been updated successfully!`)
     } else {
       await api.webhooks.post(wh)
       modal.hide()
       resetForm()
       await load()
-      successFlash(`Webhook "${escapeHtml(wh.name)}" has been created successfully!`)
+      successFlash(`Webhook "${wh.name}" has been created successfully!`)
     }
   } catch (e) {
     modalError(e.message)
@@ -133,10 +133,10 @@ async function pingWebhook(id, btn) {
   if (btn) btn.disabled = true
   try {
     const wh = await api.webhookId.ping(id)
-    successFlash(`Ping of "${escapeHtml(wh.name)}" webhook succeeded.`)
+    successFlash(`Ping of "${wh.name}" webhook succeeded.`)
   } catch (e) {
     const wh = webhooks.find((x) => x.id == id)
-    errorFlash(`Ping of "${escapeHtml(wh ? wh.name : '')}" webhook failed: "${escapeHtml(e.message)}"`)
+    errorFlash(`Ping of "${wh ? wh.name : ''}" webhook failed: "${e.message}"`)
   } finally {
     if (btn) btn.disabled = false
   }

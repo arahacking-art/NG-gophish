@@ -1,7 +1,9 @@
 package models
 
 import (
+	"archive/zip"
 	"bufio"
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
@@ -12,6 +14,21 @@ import (
 
 	"gopkg.in/check.v1"
 )
+
+func readZipEntries(c *check.C, rawZip []byte) map[string]string {
+	zr, err := zip.NewReader(bytes.NewReader(rawZip), int64(len(rawZip)))
+	c.Assert(err, check.IsNil)
+	entries := make(map[string]string, len(zr.File))
+	for _, f := range zr.File {
+		rc, err := f.Open()
+		c.Assert(err, check.IsNil)
+		data, err := ioutil.ReadAll(rc)
+		rc.Close()
+		c.Assert(err, check.IsNil)
+		entries[f.Name] = string(data)
+	}
+	return entries
+}
 
 func (s *ModelsSuite) TestAttachment(c *check.C) {
 	ptx := PhishingTemplateContext{
@@ -57,7 +74,14 @@ func (s *ModelsSuite) TestAttachment(c *check.C) {
 			}
 			templatedFile := base64.StdEncoding.EncodeToString(tt)
 			expectedOutput := readFile("testdata/" + strings.TrimSuffix(ff.Name(), filepath.Ext(ff.Name())) + ".templated" + filepath.Ext(ff.Name())) // e.g text-file-with-vars.templated.txt
-			c.Assert(templatedFile, check.Equals, expectedOutput)
+			switch filepath.Ext(fname) {
+			case ".docx", ".docm", ".pptx", ".xlsx", ".xlsm":
+				expectedBytes, err := base64.StdEncoding.DecodeString(expectedOutput)
+				c.Assert(err, check.IsNil)
+				c.Assert(readZipEntries(c, tt), check.DeepEquals, readZipEntries(c, expectedBytes))
+			default:
+				c.Assert(templatedFile, check.Equals, expectedOutput)
+			}
 		}
 	}
 }

@@ -155,7 +155,7 @@ async function saveProfile() {
   const profile = collectProfile()
   try {
     if (editId != -1) {
-      profile.id = editId
+      profile.id = parseInt(editId, 10)
       await api.SMTPId.put(profile)
       successFlash('Profile edited successfully!')
     } else {

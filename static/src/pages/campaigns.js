@@ -261,6 +261,7 @@ async function init() {
       el('emptyMessage').classList.remove('d-none')
       return
     }
+    el('campaignTabs').classList.remove('d-none')
     renderTables()
     wireTableActions('campaignTable')
     wireTableActions('campaignTableArchive')

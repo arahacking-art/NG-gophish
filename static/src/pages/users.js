@@ -1,5 +1,5 @@
 // NG-gophish - pagina User Management (Vanilla JS + Bootstrap 5 + Grid.js).
-import { api, errorFlash, successFlash, modalError, escapeHtml } from '../api.js'
+import { api, errorFlash, successFlash, modalError } from '../api.js'
 import { confirmDialog, alertDialog } from '../ui.js'
 import { initPasswordStrength } from './passwords.js'
 import { Grid, html } from 'gridjs'
@@ -104,13 +104,13 @@ async function saveUser(id) {
       modal.hide()
       resetForm()
       await load()
-      successFlash(`User ${escapeHtml(user.username)} updated successfully!`)
+      successFlash(`User ${user.username} updated successfully!`)
     } else {
       await api.users.post(user)
       modal.hide()
       resetForm()
       await load()
-      successFlash(`User ${escapeHtml(user.username)} registered successfully!`)
+      successFlash(`User ${user.username} registered successfully!`)
     }
   } catch (e) {
     modalError(e.message)
@@ -155,7 +155,7 @@ async function deleteUser(id) {
   try {
     await api.userId.delete(id)
     await load()
-    successFlash(`The user account for ${escapeHtml(user.username)} and all associated objects have been deleted!`)
+    successFlash(`The user account for ${user.username} and all associated objects have been deleted!`)
   } catch (e) {
     errorFlash(e.message)
   }
@@ -182,10 +182,10 @@ async function impersonate(id) {
     if (res.ok) {
       window.location.href = '/'
     } else {
-      errorFlash(`Failed to change to user ${escapeHtml(user.username)}.`)
+      errorFlash(`Failed to change to user ${user.username}.`)
     }
   } catch (e) {
-    errorFlash(`Failed to change to user ${escapeHtml(user.username)}: ${escapeHtml(e.message)}`)
+    errorFlash(`Failed to change to user ${user.username}: ${e.message}`)
   }
 }
 

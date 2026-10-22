@@ -188,18 +188,3 @@ export function successFlashFade(message, fade) {
 export function modalError(message) {
   renderFlash('modal.flashes', 'danger', message)
 }
-
-// Expone la capa en window para el codigo de pagina aun no modular.
-// Se ira retirando conforme las pantallas pasen a imports ES.
-export function exposeGlobals() {
-  window.api = api
-  window.query = query
-  window.escapeHtml = escapeHtml
-  window.unescapeHtml = unescapeHtml
-  window.capitalize = capitalize
-  window.errorFlash = errorFlash
-  window.successFlash = successFlash
-  window.errorFlashFade = errorFlashFade
-  window.successFlashFade = successFlashFade
-  window.modalError = modalError
-}

@@ -80,6 +80,8 @@ func (as *Server) Template(w http.ResponseWriter, r *http.Request) {
 		err = json.NewDecoder(r.Body).Decode(&t)
 		if err != nil {
 			log.Error(err)
+			JSONResponse(w, models.Response{Success: false, Message: "Invalid JSON structure"}, http.StatusBadRequest)
+			return
 		}
 		if t.Id != id {
 			JSONResponse(w, models.Response{Success: false, Message: "Error: /:id and template_id mismatch"}, http.StatusBadRequest)

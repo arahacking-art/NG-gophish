@@ -13,7 +13,7 @@ RUN npm run build
 
 
 # 2) Compilacion del binario Go (version pineada, reproducible)
-FROM golang:1.23-bookworm AS build-golang
+FROM golang:1.26-bookworm AS build-golang
 
 WORKDIR /src
 COPY . .
@@ -32,18 +32,29 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /opt/gophish
-COPY --from=build-golang /src/ ./
+COPY --from=build-golang /src/gophish ./gophish
+COPY --from=build-golang /src/config.json ./config.json
+COPY --from=build-golang /src/VERSION ./VERSION
+COPY --from=build-golang /src/db/ ./db/
+COPY --from=build-golang /src/templates/ ./templates/
+COPY --from=build-golang /src/static/db/ ./static/db/
+COPY --from=build-golang /src/static/endpoint/ ./static/endpoint/
+COPY --from=build-golang /src/static/images/ ./static/images/
+COPY --from=build-golang /src/docker/ ./docker/
 # Assets compilados por Vite (el servidor Go los sirve en /dist/*).
 COPY --from=build-js /build/static/dist/ ./static/dist/
 
 # Directorio persistente para BD y certificados (montado como volumen en compose).
-RUN mkdir -p /opt/gophish/data && chown -R app:app /opt/gophish
+RUN mkdir -p /opt/gophish/data && \
+	touch /opt/gophish/config.json.tmp && \
+	chown -R root:app /opt/gophish && \
+	chmod -R g+rX,o-rwx /opt/gophish && \
+	chown -R app:app /opt/gophish/data /opt/gophish/config.json /opt/gophish/config.json.tmp /opt/gophish/static/endpoint
 
 # Permite escuchar en el puerto 80 sin privilegios de root
 RUN setcap 'cap_net_bind_service=+ep' /opt/gophish/gophish
 
 USER app
-RUN touch config.json.tmp
 
 EXPOSE 80 3333
 

@@ -80,7 +80,7 @@ func NewPostLimiter(opts ...PostLimiterOption) *PostLimiter {
 }
 
 func (limiter *PostLimiter) pollCleanup() {
-	ticker := time.NewTicker(time.Duration(limiter.cleanupInterval) * time.Second)
+	ticker := time.NewTicker(limiter.cleanupInterval)
 	for range ticker.C {
 		limiter.Cleanup()
 	}

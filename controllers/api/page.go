@@ -74,6 +74,8 @@ func (as *Server) Page(w http.ResponseWriter, r *http.Request) {
 		err = json.NewDecoder(r.Body).Decode(&p)
 		if err != nil {
 			log.Error(err)
+			JSONResponse(w, models.Response{Success: false, Message: "Invalid request"}, http.StatusBadRequest)
+			return
 		}
 		if p.Id != id {
 			JSONResponse(w, models.Response{Success: false, Message: "/:id and /:page_id mismatch"}, http.StatusBadRequest)

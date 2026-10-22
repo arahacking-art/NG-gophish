@@ -18,8 +18,6 @@ El backend en Go es el de Gophish (sin cambios). Lo que cambia es toda la UI:
 | gulp + webpack | **Vite** |
 | Highcharts / select2 / DataTables / CKEditor | **ECharts / Tom Select / Grid.js / CodeMirror 6** (todo FOSS) |
 
-Ver [`MIGRATION.md`](MIGRATION.md) para el detalle de la migración.
-
 ## Build
 
 Requisitos: **Go 1.21+** y **Node 18+**.

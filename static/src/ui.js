@@ -31,7 +31,11 @@ export function confirmDialog({
     wrap.querySelector('.modal-title').textContent = title
     wrap.querySelector('.modal-body').textContent = body
     const cancelBtn = wrap.querySelector('.btn-secondary')
-    cancelBtn.textContent = cancelText
+    if (cancelText) {
+      cancelBtn.textContent = cancelText
+    } else {
+      cancelBtn.remove()
+    }
     const confirmBtn = wrap.querySelector('[data-ng-confirm]')
     confirmBtn.textContent = confirmText
     confirmBtn.classList.add(...confirmClass.split(' '))
@@ -47,5 +51,5 @@ export function confirmDialog({
 
 // alertDialog: aviso simple con un solo boton (OK), resuelve al cerrarse.
 export function alertDialog({ title = 'Notice', body = '', okText = 'OK', okClass = 'btn-primary' } = {}) {
-  return confirmDialog({ title, body, confirmText: okText, confirmClass: okClass, cancelText: 'Close' })
+  return confirmDialog({ title, body, confirmText: okText, confirmClass: okClass, cancelText: null })
 }

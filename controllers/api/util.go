@@ -124,6 +124,10 @@ func (as *Server) SendTestEmail(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// Send the test email
+	if as.worker == nil {
+		JSONResponse(w, models.Response{Success: false, Message: "Mailer is disabled on this instance"}, http.StatusServiceUnavailable)
+		return
+	}
 	err = as.worker.SendTestEmail(s)
 	if err != nil {
 		log.Error(err)

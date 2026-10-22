@@ -6,7 +6,6 @@
 import * as bootstrap from 'bootstrap'
 
 import { initTheme } from './theme.js'
-import { exposeGlobals } from './api.js'
 
 // CSS de librerias centralizado aqui (todas las paginas modernas cargan main.css),
 // para que las pantallas no dupliquen estos estilos.
@@ -14,13 +13,6 @@ import 'gridjs/dist/theme/mermaid.css'
 import 'tom-select/dist/css/tom-select.bootstrap5.css'
 import 'flatpickr/dist/flatpickr.min.css'
 import './styles/main.scss'
-
-// Expone api/helpers en window para el codigo de pagina en transicion.
-exposeGlobals()
-
-// Exponer Bootstrap en window para el codigo de pagina que aun no es modular
-// (se ira eliminando conforme avancen las fases de migracion).
-window.bootstrap = bootstrap
 
 // Activa tooltips y popovers declarativos ([data-bs-toggle]) en toda la app.
 function initBootstrapWidgets(root = document) {

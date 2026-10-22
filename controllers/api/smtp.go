@@ -74,6 +74,8 @@ func (as *Server) SendingProfile(w http.ResponseWriter, r *http.Request) {
 		err = json.NewDecoder(r.Body).Decode(&s)
 		if err != nil {
 			log.Error(err)
+			JSONResponse(w, models.Response{Success: false, Message: "Invalid request"}, http.StatusBadRequest)
+			return
 		}
 		if s.Id != id {
 			JSONResponse(w, models.Response{Success: false, Message: "/:id and /:smtp_id mismatch"}, http.StatusBadRequest)
@@ -88,7 +90,7 @@ func (as *Server) SendingProfile(w http.ResponseWriter, r *http.Request) {
 		s.UserId = ctx.Get(r, "user_id").(int64)
 		err = models.PutSMTP(&s)
 		if err != nil {
-			JSONResponse(w, models.Response{Success: false, Message: "Error updating page"}, http.StatusInternalServerError)
+			JSONResponse(w, models.Response{Success: false, Message: "Error updating SMTP"}, http.StatusInternalServerError)
 			return
 		}
 		JSONResponse(w, s, http.StatusOK)
