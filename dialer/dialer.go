@@ -33,6 +33,7 @@ func (d *RestrictedDialer) AllowedHosts() []string {
 
 // SetAllowedHosts sets the list of allowed hosts or IP ranges for the dialer.
 func (d *RestrictedDialer) SetAllowedHosts(allowed []string) error {
+	d.allowedHosts = nil
 	for _, ipRange := range allowed {
 		// For flexibility, try to parse as an IP first since this will
 		// undoubtedly cause issues. If it works, then just append the
@@ -111,11 +112,6 @@ var allInternal = []string{
 }
 
 type dialControl = func(network, address string, c syscall.RawConn) error
-
-type restrictedDialer struct {
-	*net.Dialer
-	allowed []string
-}
 
 func restrictedControl(allowed []*net.IPNet) dialControl {
 	return func(network string, address string, conn syscall.RawConn) error {

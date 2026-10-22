@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"io"
-	"io/ioutil"
 	"net/url"
 	"path/filepath"
 	"regexp"
@@ -92,7 +91,7 @@ func (a *Attachment) ApplyTemplate(ptx PhishingTemplateContext) (io.Reader, erro
 				zipWriter.Close()
 				return nil, err
 			}
-			contents, err := ioutil.ReadAll(ff)
+			contents, err := io.ReadAll(ff)
 			ff.Close()
 			if err != nil {
 				zipWriter.Close()
@@ -140,7 +139,7 @@ func (a *Attachment) ApplyTemplate(ptx PhishingTemplateContext) (io.Reader, erro
 		return bytes.NewReader(newZipArchive.Bytes()), err
 
 	case ".txt", ".html", ".ics":
-		b, err := ioutil.ReadAll(decodedAttachment)
+		b, err := io.ReadAll(decodedAttachment)
 		if err != nil {
 			return nil, err
 		}

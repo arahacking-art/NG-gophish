@@ -27,7 +27,6 @@ THE SOFTWARE.
 */
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
@@ -61,7 +60,7 @@ var (
 func main() {
 	// Load the version
 
-	version, err := ioutil.ReadFile("./VERSION")
+	version, err := os.ReadFile("./VERSION")
 	if err != nil {
 		log.Fatal(err)
 	}

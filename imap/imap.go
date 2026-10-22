@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"regexp"
 	"strconv"
 	"time"
 
@@ -163,10 +162,7 @@ func (mbox *Mailbox) GetUnread(markAsRead, delete bool) ([]Email, error) {
 		}
 
 		//Remove CR characters, see https://github.com/jordan-wright/email/issues/106
-		tmp := string(buf)
-		re := regexp.MustCompile(`\r`)
-		tmp = re.ReplaceAllString(tmp, "")
-		buf = []byte(tmp)
+		buf = bytes.ReplaceAll(buf, []byte("\r"), nil)
 
 		rawBodyStream := bytes.NewReader(buf)
 		em, err = email.NewEmailFromReader(rawBodyStream) // Parse with @jordanwright's library
@@ -199,11 +195,13 @@ func (mbox *Mailbox) newClient() (*client.Client, error) {
 
 	err = imapClient.Login(mbox.User, mbox.Pwd)
 	if err != nil {
+		imapClient.Logout()
 		return imapClient, err
 	}
 
 	_, err = imapClient.Select(mbox.Folder, mbox.ReadOnly)
 	if err != nil {
+		imapClient.Logout()
 		return imapClient, err
 	}
 
