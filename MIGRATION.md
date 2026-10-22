@@ -24,8 +24,8 @@ actual, accesible y 100 % libre (FOSS), eliminando dependencias obsoletas.
 - [x] **Fase 1 — Chrome común**: `base.html`, `nav.html`, `login.html` (piloto). *(`flashes.html` se migra en Fase 2.)*
 - [x] **Fase 2 — Pantallas simples**: dashboard (ECharts), reset_password, webhooks, users, settings. *(capa `api.js` fetch compartida; `flashes.html` se limpia en Fase 5.)*
 - [x] **Fase 3 — Pantallas con tablas**: groups, landing_pages, sending_profiles, templates, campaigns. *(helper de confirmación modal BS5; editor HTML CodeMirror 6 + preview reemplaza CKEditor.)*
-- [ ] **Fase 4 — Resultados de campaña**: `campaign_results` (mapa, gráficas y tablas).
-- [ ] **Fase 5 — Limpieza**: eliminar jQuery y vendor obsoleto, QA final.
+- [x] **Fase 4 — Resultados de campaña**: `campaign_results` (mapa ECharts, gráficas, tabla Grid.js, replay, export CSV).
+- [x] **Fase 5 — Limpieza**: eliminado jQuery, Bootstrap 3, gulp/webpack y todos los assets legacy; Dockerfile build con Vite. **Migración completa.**
 
 ## Principios
 
