@@ -21,6 +21,11 @@ export default defineConfig({
         users: resolve(__dirname, 'static/src/pages/users.js'),
         webhooks: resolve(__dirname, 'static/src/pages/webhooks.js'),
         reset_password: resolve(__dirname, 'static/src/pages/reset_password.js'),
+        sending_profiles: resolve(__dirname, 'static/src/pages/sending_profiles.js'),
+        groups: resolve(__dirname, 'static/src/pages/groups.js'),
+        templates: resolve(__dirname, 'static/src/pages/templates.js'),
+        landing_pages: resolve(__dirname, 'static/src/pages/landing_pages.js'),
+        campaigns: resolve(__dirname, 'static/src/pages/campaigns.js'),
       },
       output: {
         entryFileNames: '[name].js',
