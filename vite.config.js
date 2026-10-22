@@ -26,6 +26,7 @@ export default defineConfig({
         templates: resolve(__dirname, 'static/src/pages/templates.js'),
         landing_pages: resolve(__dirname, 'static/src/pages/landing_pages.js'),
         campaigns: resolve(__dirname, 'static/src/pages/campaigns.js'),
+        campaign_results: resolve(__dirname, 'static/src/pages/campaign_results.js'),
       },
       output: {
         entryFileNames: '[name].js',
