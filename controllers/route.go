@@ -248,6 +248,7 @@ func (as *AdminServer) LandingPages(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) SendingProfiles(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Sending Profiles"
+	params.Modern = true
 	getTemplate(w, "sending_profiles").ExecuteTemplate(w, "base", params)
 }
 
