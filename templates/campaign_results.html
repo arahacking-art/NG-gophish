@@ -1,91 +1,92 @@
 {{define "body"}}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <div id="loading">
-        <i class="fa fa-spinner fa-spin fa-4x"></i>
-    </div>
-    <div style="display:none;" id="campaignResults">
-        <div class="row">
-            <h1 class="page-header" id="page-title">Results for campaign.name</h1>
-        </div>
-        <div class="row">
-            <a href="/campaigns" class="btn btn-default">
-                <i class="fa fa-arrow-circle-o-left fa-lg"></i> Back
-            </a>
+<div id="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+</div>
+
+<div id="campaignResults" class="d-none">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h1 class="h3 mb-0" id="page-title">Results</h1>
+        <div class="btn-group">
+            <a href="/campaigns" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back</a>
             <div class="btn-group">
-                <button type="button" id="exportButton" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
-                    <i class="fa fa-file-excel-o"></i> Export CSV
-                    <i class="fa fa-caret-down"></i>
+                <button type="button" class="btn btn-primary dropdown-toggle" id="exportButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-filetype-csv me-1"></i>Export CSV
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="exportButton">
-                    <li>
-                        <a href="#" onclick="exportAsCSV('results')">Results</a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="exportAsCSV('events')">Raw Events</a>
-                    </li>
+                    <li><a class="dropdown-item" href="#" data-export="results">Results</a></li>
+                    <li><a class="dropdown-item" href="#" data-export="events">Raw Events</a></li>
                 </ul>
             </div>
-            <button id="complete_button" type="button" class="btn btn-blue" data-toggle="tooltip" onclick="completeCampaign()">
-                <i class="fa fa-flag-checkered"></i> Complete
-            </button>
-            <button type="button" class="btn btn-danger" data-toggle="tooltip" onclick="deleteCampaign()">
-                <i class="fa fa-trash-o fa-lg"></i> Delete
-            </button>
-            <button id="refresh_btn" type="button" class="btn btn-blue" data-toggle="tooltip" onclick="refresh()">
-                <i class="fa fa-refresh fa-lg"></i> Refresh
-            </button>
-            <span id="refresh_message">
-                <i class="fa fa-spin fa-spinner"></i> Refreshing
+            <button id="complete_button" type="button" class="btn btn-info"><i class="bi bi-flag me-1"></i>Complete</button>
+            <button id="delete_button" type="button" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+            <button id="refresh_btn" type="button" class="btn btn-info"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+            <span id="refresh_message" class="btn btn-info disabled d-none">
+                <span class="spinner-border spinner-border-sm me-1"></span>Refreshing
             </span>
         </div>
-        <br />
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div id="timeline_chart"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div style="height:200px;" class="col-lg-1 col-md-1"></div>
-                    <div id="sent_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-                    <div id="opened_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-                    <div id="clicked_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-                    <div id="submitted_data_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-                    <div id="reported_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-                    <div style="height:200px;" class="col-lg-1 col-md-1"></div>
-                </div>
-                <div class="row" id="resultsMapContainer">
-                    <div class="col-md-6">
-                        <p style="text-align:center;">Targets Map</p>
-                        <div id="resultsMap"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h2>Details</h2>
-            <table id="resultsTable" class="table">
-                <thead>
-                    <tr>
-                        <th>Result ID</th>
-                        <th class="no-sort"></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Position</th>
-                        <th>Status</th>
-                        <th class="text-center">Reported</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body"><div id="timeline_chart" style="height:200px;"></div></div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-6 col-md"><div class="card h-100"><div class="card-body p-2"><div id="sent_chart" style="height:150px;"></div></div></div></div>
+        <div class="col-6 col-md"><div class="card h-100"><div class="card-body p-2"><div id="opened_chart" style="height:150px;"></div></div></div></div>
+        <div class="col-6 col-md"><div class="card h-100"><div class="card-body p-2"><div id="clicked_chart" style="height:150px;"></div></div></div></div>
+        <div class="col-6 col-md"><div class="card h-100"><div class="card-body p-2"><div id="submitted_data_chart" style="height:150px;"></div></div></div></div>
+        <div class="col-6 col-md"><div class="card h-100"><div class="card-body p-2"><div id="reported_chart" style="height:150px;"></div></div></div></div>
+    </div>
+
+    <div class="card mb-3 d-none" id="resultsMapContainer">
+        <div class="card-body">
+            <h2 class="h6 text-center">Targets Map</h2>
+            <div id="resultsMap" style="height:360px;"></div>
         </div>
     </div>
-    <div id="flashes" class="row"></div>
+
+    <h2 class="h5 mb-2">Details</h2>
+    <div class="card">
+        <div class="card-body"><div id="resultsTable"></div></div>
+    </div>
 </div>
-{{end}} {{define "scripts"}}
-<script src="/js/dist/app/campaign_results.min.js"></script>
+
+<div id="flashes" class="mt-3"></div>
+
+<!-- Per-result timeline detail modal -->
+<div class="modal fade" id="resultDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultDetailLabel">Timeline</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="resultDetailBody"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Replay credentials URL modal -->
+<div class="modal fade" id="replayModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Replay Credentials</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label" for="replayUrl">Where do you want the credentials submitted to?</label>
+                <input type="text" class="form-control" id="replayUrl" placeholder="http://example.com/login">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="replaySubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
+{{define "scripts"}}
+<script type="module" src="/dist/campaign_results.js"></script>
 {{end}}
