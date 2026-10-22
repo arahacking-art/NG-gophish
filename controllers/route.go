@@ -227,6 +227,7 @@ func (as *AdminServer) CampaignID(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) Templates(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Email Templates"
+	params.Modern = true
 	getTemplate(w, "templates").ExecuteTemplate(w, "base", params)
 }
 
@@ -242,6 +243,7 @@ func (as *AdminServer) Groups(w http.ResponseWriter, r *http.Request) {
 func (as *AdminServer) LandingPages(w http.ResponseWriter, r *http.Request) {
 	params := newTemplateParams(r)
 	params.Title = "Landing Pages"
+	params.Modern = true
 	getTemplate(w, "landing_pages").ExecuteTemplate(w, "base", params)
 }
 
